@@ -1,7 +1,9 @@
+import { MainPage } from "./pages/MainPage";
+
 function App() {
   return (
     <>
-      <h1>Hello</h1>
+      <MainPage />
     </>
   );
 }
