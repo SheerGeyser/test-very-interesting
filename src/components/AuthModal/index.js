@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap';
 
 import { useDispatch, useSelector } from "react-redux";
-import { signInThunk } from "../../store/login";
+import { signInThunk, clearError } from "../../store/login";
 import { registerThunk } from "../../store/register";
 
 import '../loader.css'
@@ -14,29 +14,16 @@ export const AuthModal = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('')
     const { isLoading, error } = useSelector((state) => state.login);
-    const [errorMsg, setErrorMsg] = useState('')
 
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        if (!isLoading) {
-            setErrorMsg(error)
-            console.log(`LOADING: ${isLoading}\nError: ${errorMsg}`);
-        } else {
-            setErrorMsg(error)
-            console.log(`ELSE\nLOADING: ${isLoading}\nError: ${errorMsg}`);
-        }
-    }, [isLoading, error, errorMsg])
-
     const handleLogin = async (e) => {
         e.preventDefault();
-        setErrorMsg('')
         dispatch(signInThunk({ email, password }));
     };
 
     const handleRegister = (e) => {
         e.preventDefault();
-        setErrorMsg('')
         dispatch(registerThunk({ email, password }));
     };
 
@@ -44,7 +31,7 @@ export const AuthModal = () => {
         setAuth(!auth);
         setPassword('');
         setEmail('');
-        setErrorMsg('')
+        dispatch(clearError());
     }
 
 
@@ -78,7 +65,7 @@ export const AuthModal = () => {
                                 <Form.Label>Пароль</Form.Label>
                                 <Form.Control onChange={(e) => setPassword(e.target.value)} value={password} type="password" placeholder="Пароль" />
                             </Form.Group>
-                            {error && (<p>{errorMsg}</p>)}
+                            {error && (<p>{error}</p>)}
                             {isLoading && <div style={{ textAlign: 'center' }}><div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div></div>}
                             <Button variant="success" name="Log in" type="submit" block>
                                 Войти
@@ -98,7 +85,7 @@ export const AuthModal = () => {
                                 <Form.Label>Пароль</Form.Label>
                                 <Form.Control onChange={(e) => setPassword(e.target.value)} value={password} type="password" placeholder="Пароль" />
                             </Form.Group>
-                            {error && (<p>{errorMsg}</p>)}
+                            {error && (<p>{error}</p>)}
                             {isLoading && <div style={{ textAlign: 'center' }}><div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div></div>}
                             <Button variant="success" name="Log in" type="submit" block>
                                 Зарегестрироваться
