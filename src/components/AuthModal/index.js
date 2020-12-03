@@ -12,7 +12,7 @@ import '../loader.css'
 
 export const AuthModal = () => {
     const [showModal, setShowModal] = useState(false);
-    const [auth, setAuth] = useState(false);
+    const [needAuth, setNeedAuth] = useState(false);
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('')
@@ -57,7 +57,7 @@ export const AuthModal = () => {
     };
 
     const handleChangeAuth = () => {
-        setAuth(!auth);
+        setNeedAuth(!needAuth);
         setPassword('');
         setEmail('');
     }
@@ -80,7 +80,7 @@ export const AuthModal = () => {
             >
                 <Modal.Header closeButton>
                     {
-                        !auth ? <Modal.Title id="example-modal-sizes-title-sm">
+                        !needAuth ? <Modal.Title id="example-modal-sizes-title-sm">
                             Вход
           </Modal.Title> : <Modal.Title id="example-modal-sizes-title-sm">
                                 Регистрация
@@ -88,7 +88,7 @@ export const AuthModal = () => {
                     }
                 </Modal.Header>
                 <Modal.Body>
-                    {!auth ?
+                    {!needAuth ?
                         <Form onSubmit={e => handleLogin(e)}>
                             <Form.Group controlId="formBasicEmail">
                                 <Form.Label>Адрес почты</Form.Label>

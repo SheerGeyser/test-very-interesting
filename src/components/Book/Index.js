@@ -1,9 +1,13 @@
 import { Card, ListGroup, ListGroupItem } from "react-bootstrap"
 
-export const Book = ({ name, authors, year, isbn }) => {
+import './Book.scss'
+
+export const Book = ({ src, name, authors, year, isbn }) => {
     return (
         <Card>
-            <Card.Img variant="top" src="https://cdn1.ozone.ru/multimedia/wc1200/1010838592.jpg" />
+            <div className='imgWrapper'>
+                <Card.Img variant="top" src={src} />
+            </div>
             <Card.Body>
                 <Card.Title>{name}</Card.Title>
             </Card.Body>

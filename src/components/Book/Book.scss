@@ -1,5 +1,14 @@
+.imgWrapper{
+        width: 16em;
+        align-self: center;
+
+        img{
+            height: 23em;
+        }
+}
+
 .list-group-item {
-    span {
-        font-weight: bold;
-    }
+        span {
+            font-weight: bold;
+        }
 }
