@@ -11,17 +11,17 @@ export const signInThunk = createAsyncThunk(
 
 const loginSlice = createSlice({
     name: "login",
-    initialState: { isLoading: false, error: undefined },
+    initialState: { isLoadingLogin: false, errorLogin: undefined },
     reducers: {
-        clearError: (state) => ({ ...state, error: undefined }),
+        clearError: (state) => ({ ...state, errorLogin: undefined }),
     },
     extraReducers: {
-        [signInThunk.pending]: (state) => ({ ...state, isLoading: true }),
-        [signInThunk.fulfilled]: (state) => ({ ...state, isLoading: false, error: undefined }),
+        [signInThunk.pending]: (state) => ({ ...state, isLoadingLogin: true, errorLogin: undefined }),
+        [signInThunk.fulfilled]: (state) => ({ ...state, isLoadingLogin: false }),
         [signInThunk.rejected]: (state, { error }) => ({
             ...state,
-            isLoading: false,
-            error: error.message,
+            isLoadingLogin: false,
+            errorLogin: error.message,
         }),
     },
 });

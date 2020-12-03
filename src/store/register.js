@@ -10,17 +10,20 @@ export const registerThunk = createAsyncThunk(
 
 const registerSlice = createSlice({
     name: "register",
-    initialState: { isLoading: false, error: undefined },
-    reducers: {},
+    initialState: { isLoadingRegister: false, errorRegister: undefined },
+    reducers: {
+        clearError: (state) => ({ ...state, errorRegister: undefined }),
+    },
     extraReducers: {
-        [registerThunk.pending]: (state) => ({ ...state, isLoading: true }),
-        [registerThunk.fulfilled]: (state) => ({ ...state, isLoading: false }),
+        [registerThunk.pending]: (state) => ({ ...state, isLoadingRegister: true, errorRegister: undefined }),
+        [registerThunk.fulfilled]: (state) => ({ ...state, isLoadingRegister: false }),
         [registerThunk.rejected]: (state, { error }) => ({
             ...state,
-            isLoading: false,
-            error,
+            isLoadingRegister: false,
+            errorRegister: error.message,
         }),
     },
 });
 
+export const { clearError } = registerSlice.actions;
 export const registerReducer = registerSlice.reducer;

@@ -1,9 +1,12 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap';
 
 import { useDispatch, useSelector } from "react-redux";
-import { signInThunk, clearError } from "../../store/login";
-import { registerThunk } from "../../store/register";
+import { signInThunk, clearError as clearErrorLogin } from "../../store/login";
+import { updateAuthState } from "../../store/auth"
+import { registerThunk, clearError as clearErrorRegister } from "../../store/register";
+
+import firebase from "firebase/app";
 
 import '../loader.css'
 
@@ -13,11 +16,37 @@ export const AuthModal = () => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('')
-    const { isLoading, error } = useSelector((state) => state.login);
+    const { isLoadingLogin, errorLogin } = useSelector((state) => state.login);
+    const { isLoadingRegister, errorRegister } = useSelector((state) => state.register);
+    const { user } = useSelector((state) => state.auth);
 
     const dispatch = useDispatch();
 
-    const handleLogin = async (e) => {
+    useEffect(() => {
+        const unsub = firebase.auth().onAuthStateChanged((user) => {
+            dispatch(
+                updateAuthState(
+                    user
+                        ? { username: user.email, id: user.uid }
+                        : null
+                )
+            );
+        });
+        return () => unsub();
+    }, [dispatch]);
+
+    useEffect(() => {
+        if (user) {
+            setShowModal(false)
+        }
+    }, [user]);
+
+    const handleSignOut = () => {
+        firebase.auth().signOut()
+    }
+
+
+    const handleLogin = (e) => {
         e.preventDefault();
         dispatch(signInThunk({ email, password }));
     };
@@ -31,13 +60,18 @@ export const AuthModal = () => {
         setAuth(!auth);
         setPassword('');
         setEmail('');
-        dispatch(clearError());
     }
-
 
     return (
         <>
-            <Button onClick={() => setShowModal(true)} variant="outline-success">Войти</Button>
+            {
+                user === null || user === undefined
+                    ?
+                    <Button onClick={() => setShowModal(true)} variant="outline-success">Войти</Button>
+                    :
+                    <Button onClick={() => handleSignOut()} variant="outline-success">Выйти</Button>
+            }
+
             <Modal
                 size="md"
                 show={showModal}
@@ -65,12 +99,15 @@ export const AuthModal = () => {
                                 <Form.Label>Пароль</Form.Label>
                                 <Form.Control onChange={(e) => setPassword(e.target.value)} value={password} type="password" placeholder="Пароль" />
                             </Form.Group>
-                            {error && (<p>{error}</p>)}
-                            {isLoading && <div style={{ textAlign: 'center' }}><div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div></div>}
+                            {errorLogin && (<p>{errorLogin}</p>)}
+                            {isLoadingLogin && <div style={{ textAlign: 'center' }}><div className="lds-ellipsis"><div></div><div></div><div></div><div></div></div></div>}
                             <Button variant="success" name="Log in" type="submit" block>
                                 Войти
                                 </Button>
-                            <Button onClick={() => handleChangeAuth()} variant="outline-success" name="Registration" type="button" block>
+                            <Button onClick={() => {
+                                handleChangeAuth()
+                                dispatch(clearErrorLogin())
+                            }} variant="outline-success" name="Registration" type="button" block>
                                 Регистрация
                                 </Button>
                         </Form>
@@ -85,12 +122,15 @@ export const AuthModal = () => {
                                 <Form.Label>Пароль</Form.Label>
                                 <Form.Control onChange={(e) => setPassword(e.target.value)} value={password} type="password" placeholder="Пароль" />
                             </Form.Group>
-                            {error && (<p>{error}</p>)}
-                            {isLoading && <div style={{ textAlign: 'center' }}><div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div></div>}
+                            {errorRegister && (<p>{errorRegister}</p>)}
+                            {isLoadingRegister && <div style={{ textAlign: 'center' }}><div className="lds-ellipsis"><div></div><div></div><div></div><div></div></div></div>}
                             <Button variant="success" name="Log in" type="submit" block>
                                 Зарегестрироваться
                             </Button>
-                            <Button onClick={() => handleChangeAuth()} variant="outline-success" name="Registration" type="button" block>
+                            <Button onClick={() => {
+                                handleChangeAuth()
+                                dispatch(clearErrorRegister())
+                            }} variant="outline-success" name="Registration" type="button" block>
                                 Уже есть аккаунт
                             </Button>
                         </Form>
