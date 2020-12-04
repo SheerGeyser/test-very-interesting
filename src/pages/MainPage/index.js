@@ -1,7 +1,6 @@
 import React from 'react'
 import { Container, Row } from 'react-bootstrap'
 import { Book } from '../../components/Book/Index'
-import { NavigationBar } from '../../components/NavigationBar'
 
 import './MainPage.scss'
 
@@ -11,7 +10,6 @@ export const MainPage = () => {
 
     return (
         <>
-            <NavigationBar />
             <Container className='itemWrapper'>
                 <Row>
                     {count.map(() => <Book
