@@ -5,7 +5,8 @@ export const fetchBooks = createAsyncThunk(
     "books/fetchBooks",
     async () => {
         const books = await firebase.firestore().collection('book').get();
-        return books.docs.map((t) => ({ ...t.data(), id: t.id }));
+        // return books.docs.map((t) => ({ ...t.data(), id: t.id }));
+        return []
     }
 );
 

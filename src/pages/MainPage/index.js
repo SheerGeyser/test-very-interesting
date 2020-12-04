@@ -12,13 +12,13 @@ export const MainPage = () => {
     const dispatch = useDispatch();
     const { isLoadingBooks, items, errorBooks } = useSelector((state) => state.books)
 
-    // useEffect(() => {
-    //     dispatch(fetchBooks())
-    // }, []);
+    useEffect(() => {
+        dispatch(fetchBooks())
+    }, []);
 
     return (
         <>
-            <NavigationBar />
+            {/* <NavigationBar /> */}
             <Container className='itemWrapper'>
                 <Row>
                     {errorBooks && (

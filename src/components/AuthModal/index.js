@@ -3,7 +3,6 @@ import { Button, Form, Modal } from 'react-bootstrap';
 
 import { useDispatch, useSelector } from "react-redux";
 import { signInThunk, clearError as clearErrorLogin } from "../../store/login";
-import { updateAuthState } from "../../store/auth"
 import { registerThunk, clearError as clearErrorRegister } from "../../store/register";
 
 import firebase from "firebase/app";
@@ -23,27 +22,14 @@ export const AuthModal = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        const unsub = firebase.auth().onAuthStateChanged((user) => {
-            dispatch(
-                updateAuthState(
-                    user
-                        ? { username: user.email, id: user.uid }
-                        : null
-                )
-            );
-        });
-        return () => unsub();
-    }, [dispatch]);
-
-    useEffect(() => {
         if (user) {
             setShowModal(false)
         }
     }, [user]);
 
-    const handleSignOut = () => {
-        firebase.auth().signOut()
-    }
+    // const handleSignOut = () => {
+    //     firebase.auth().signOut()
+    // }
 
 
     const handleLogin = (e) => {
@@ -65,11 +51,11 @@ export const AuthModal = () => {
     return (
         <>
             {
-                user === null || user === undefined
+                user === null
                     ?
                     <Button onClick={() => setShowModal(true)} variant="outline-success">Войти</Button>
                     :
-                    <Button onClick={() => handleSignOut()} variant="outline-success">Выйти</Button>
+                    <Button onClick={() => firebase.auth().signOut()} variant="outline-success">Выйти</Button>
             }
 
             <Modal
