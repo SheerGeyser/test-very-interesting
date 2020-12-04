@@ -1,7 +1,16 @@
+import { Container, Row } from "react-bootstrap"
+
+import './EditPage.scss'
+import { AddBook } from "../../components/AddBook"
+
 export const EditPage = () => {
     return (
-        <div>
-            <h1>EditPage</h1>
-        </div>
+        <>
+            <Container className='itemWrapper'>
+                <Row>
+                    <AddBook />
+                </Row>
+            </Container>
+        </>
     )
 }

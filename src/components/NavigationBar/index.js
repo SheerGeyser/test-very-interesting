@@ -4,8 +4,8 @@ import { Button, Container, Form, Modal, Nav, Navbar } from "react-bootstrap"
 import firebase from "firebase/app";
 
 import { Loader } from '../Loader'
-import { signInThunk } from "../../store/login";
-import { registerThunk } from "../../store/register";
+import { clearErrorLog, signInThunk } from "../../store/login";
+import { clearErrorReg, registerThunk } from "../../store/register";
 
 export const NavigationBar = ({ user }) => {
     const [showModal, setShowModal] = useState(false);
@@ -13,6 +13,8 @@ export const NavigationBar = ({ user }) => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('')
+    const [passwordСonfirmation, setPasswordСonfirmation] = useState('')
+    const [passConfError, setPassConfError] = useState(undefined)
     const { isLoadingLogin, errorLogin } = useSelector((state) => state.login);
     const { isLoadingRegister, errorRegister } = useSelector((state) => state.register);
 
@@ -36,13 +38,21 @@ export const NavigationBar = ({ user }) => {
 
     const handleRegister = (e) => {
         e.preventDefault();
-        dispatch(registerThunk({ email, password }));
+        if (password === passwordСonfirmation) {
+            dispatch(registerThunk({ email, password }));
+        } else {
+            setPassword('');
+            setPasswordСonfirmation('');
+            setPassConfError('Пароли не совпадают')
+        }
+
     };
 
     const handleChangeAuth = () => {
         setAuth(!auth);
-        setPassword('');
         setEmail('');
+        setPassword('');
+        setPassConfError('')
     }
 
 
@@ -53,6 +63,7 @@ export const NavigationBar = ({ user }) => {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">
+                        <Nav.Link href="/edit">Редактор</Nav.Link>
                     </Nav>
                     {
                         !user
@@ -62,7 +73,12 @@ export const NavigationBar = ({ user }) => {
                     <Modal
                         size="md"
                         show={showModal}
-                        onHide={() => setShowModal(false)}
+                        onHide={() => {
+                            setShowModal(false);
+                            setTimeout(() => {
+                                setAuth(true)
+                            }, 100)
+                        }}
                         aria-labelledby="example-modal-sizes-title-sm"
                     >
                         <Modal.Header closeButton>
@@ -78,36 +94,46 @@ export const NavigationBar = ({ user }) => {
                                     ? <Form onSubmit={e => e.preventDefault()}>
                                         <Form.Group controlId="formBasicEmail">
                                             <Form.Label >Адрес почты</Form.Label>
-                                            <Form.Control onChange={(e) => setEmail(e.target.value)} type="email" placeholder="Enter email" />
+                                            <Form.Control onChange={(e) => setEmail(e.target.value)} value={email} type="email" placeholder="Введите адрес почты" />
                                         </Form.Group>
                                         <Form.Group controlId="formBasicPassword">
                                             <Form.Label>Пароль</Form.Label>
-                                            <Form.Control onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Пароль" />
+                                            <Form.Control onChange={(e) => setPassword(e.target.value)} value={password} type="password" placeholder="Пароль" />
                                         </Form.Group>
                                         {errorLogin && (<p>{errorLogin}</p>)}
                                         {isLoadingLogin && <Loader />}
                                         <Button variant="success" onClick={(e) => handleLogin(e)} name="Log in" type="submit" block>
                                             Войти
                                         </Button>
-                                        <Button onClick={() => handleChangeAuth()} variant="outline-success" name="Registration" type="button" block>
+                                        <Button onClick={() => {
+                                            handleChangeAuth()
+                                            dispatch(clearErrorLog())
+                                        }} variant="outline-success" name="Registration" type="button" block>
                                             Регистрация
                                     </Button>
                                     </Form>
                                     : <Form onSubmit={e => e.preventDefault()}>
                                         <Form.Group controlId="formBasicEmail">
                                             <Form.Label>Адрес почты</Form.Label>
-                                            <Form.Control onChange={(e) => setEmail(e.target.value)} type="email" placeholder="Enter email" />
+                                            <Form.Control onChange={(e) => setEmail(e.target.value)} value={email} type="email" placeholder="Введите адрес почты" />
                                         </Form.Group>
                                         <Form.Group controlId="formBasicPassword">
                                             <Form.Label >Пароль</Form.Label>
-                                            <Form.Control onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Пароль" />
+                                            <Form.Control onChange={(e) => setPassword(e.target.value)} value={password} type="password" placeholder="Пароль" />
                                         </Form.Group>
+                                        <Form.Group controlId="formBasicPassword">
+                                            <Form.Control onChange={(e) => setPasswordСonfirmation(e.target.value)} value={passwordСonfirmation} type="password" placeholder="Поддтвердите пароль" />
+                                        </Form.Group>
+                                        {passConfError && (<p>{passConfError}</p>)}
                                         {errorRegister && (<p>{errorRegister}</p>)}
                                         {isLoadingRegister && <Loader />}
                                         <Button variant="success" onClick={(e) => handleRegister(e)} name="Log in" type="submit" block>
                                             Зарегестрироваться
                                     </Button>
-                                        <Button onClick={() => handleChangeAuth()} variant="outline-success" name="Registration" type="button" block>
+                                        <Button onClick={() => {
+                                            handleChangeAuth()
+                                            dispatch(clearErrorReg())
+                                        }} variant="outline-success" name="Registration" type="button" block>
                                             Уже есть аккаунт
                                 </Button>
                                     </Form>

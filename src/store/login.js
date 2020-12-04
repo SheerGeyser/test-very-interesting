@@ -14,7 +14,7 @@ const loginSlice = createSlice({
     name: "login",
     initialState: { isLoadingLogin: false, errorLogin: undefined },
     reducers: {
-        clearError: (state) => ({ ...state, errorLogin: undefined }),
+        clearErrorLog: (state) => ({ ...state, errorLogin: undefined }),
     },
     extraReducers: {
         [signInThunk.pending]: (state) => ({ ...state, isLoadingLogin: true, errorLogin: undefined }),
@@ -27,5 +27,5 @@ const loginSlice = createSlice({
     },
 });
 
-export const { clearError } = loginSlice.actions;
+export const { clearErrorLog } = loginSlice.actions;
 export const loginReducer = loginSlice.reducer;

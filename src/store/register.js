@@ -12,7 +12,7 @@ const registerSlice = createSlice({
     name: "register",
     initialState: { isLoadingRegister: false, errorRegister: undefined },
     reducers: {
-        clearError: (state) => ({ ...state, errorRegister: undefined }),
+        clearErrorReg: (state) => ({ ...state, errorRegister: undefined }),
     },
     extraReducers: {
         [registerThunk.pending]: (state) => ({ ...state, isLoadingRegister: true, errorRegister: undefined }),
@@ -25,5 +25,5 @@ const registerSlice = createSlice({
     },
 });
 
-export const { clearError } = registerSlice.actions;
+export const { clearErrorReg } = registerSlice.actions;
 export const registerReducer = registerSlice.reducer;
