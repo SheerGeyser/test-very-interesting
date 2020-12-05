@@ -12,7 +12,6 @@ import { fetchBooks } from './store/books';
 
 function App() {
 
-  const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -39,7 +38,7 @@ function App() {
   return (
     <>
       <Router>
-        <NavigationBar user={user} />
+        <NavigationBar />
         <Switch>
           <Route exact path='/' component={MainPage} />
           <Route exact path='/edit' component={EditPage} />

@@ -6,8 +6,11 @@ import firebase from "firebase/app";
 import { Loader } from '../Loader'
 import { clearErrorLog, signInThunk } from "../../store/login";
 import { clearErrorReg, registerThunk } from "../../store/register";
+import { updateAuthState } from "../../store/auth";
 
-export const NavigationBar = ({ user }) => {
+
+
+export const NavigationBar = () => {
     const [showModal, setShowModal] = useState(false);
     const [auth, setAuth] = useState(true);
 
@@ -17,6 +20,7 @@ export const NavigationBar = ({ user }) => {
     const [passConfError, setPassConfError] = useState(undefined)
     const { isLoadingLogin, errorLogin } = useSelector((state) => state.login);
     const { isLoadingRegister, errorRegister } = useSelector((state) => state.register);
+    const { user } = useSelector((state) => state.auth);
 
     const dispatch = useDispatch();
 
@@ -27,6 +31,7 @@ export const NavigationBar = ({ user }) => {
     }, [user]);
 
     const handleSignOut = () => {
+        dispatch(updateAuthState(null));
         firebase.auth().signOut()
     }
 
@@ -66,7 +71,7 @@ export const NavigationBar = ({ user }) => {
                         <Nav.Link href="/edit">Редактор</Nav.Link>
                     </Nav>
                     {
-                        !user
+                        user === null
                             ? <Button onClick={() => setShowModal(true)} variant="outline-success">Войти</Button>
                             : <Button onClick={() => handleSignOut()} variant="outline-success">Выйти</Button>
                     }

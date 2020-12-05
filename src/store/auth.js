@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const authSlice = createSlice({
     name: "auth",
     initialState: {
-        user: undefined,
+        user: null,
     },
     reducers: {
         updateAuthState: (state, { payload }) => ({ ...state, user: payload }),
