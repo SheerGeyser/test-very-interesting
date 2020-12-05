@@ -43,6 +43,7 @@ function App() {
         <Switch>
           <Route exact path='/' component={MainPage} />
           <Route exact path='/edit' component={user ? EditPage : Error404} />
+          <Route exact path='*' component={Error404} />
         </Switch>
       </Router>
 
