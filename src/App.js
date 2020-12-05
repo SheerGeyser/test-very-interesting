@@ -8,10 +8,11 @@ import { EditPage } from "./pages/EditPage";
 import { NavigationBar } from './components/NavigationBar'
 import { updateAuthState } from "./store/auth"
 import { fetchBooks } from './store/books';
+import { Error404 } from './pages/404';
 
 
 function App() {
-
+  const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -41,7 +42,7 @@ function App() {
         <NavigationBar />
         <Switch>
           <Route exact path='/' component={MainPage} />
-          <Route exact path='/edit' component={EditPage} />
+          <Route exact path='/edit' component={user ? EditPage : Error404} />
         </Switch>
       </Router>
 
