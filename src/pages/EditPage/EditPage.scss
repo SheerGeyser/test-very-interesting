@@ -1,17 +1,13 @@
 .itemWrapper{
     margin-top: 5em;
     .row{
-        justify-content: space-between;
-        padding-right: 15px;
-        padding-left: 15px;
-        @media (max-width: 768px){
+        @media (max-width: 844px){
             justify-content: center;
         }
         
         .card{
-            width: 18em;
             margin-bottom: 2em;
-
+            width: 18em;
             @media (max-width: 768px){
                 width: 100%;
             }

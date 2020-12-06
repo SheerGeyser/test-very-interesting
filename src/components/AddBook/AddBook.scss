@@ -1,15 +1,20 @@
-.imgWrapper{
-    margin-top: .8em;
-    width: 16em;
-    align-self: center;
-
-    img{
-        height: 23em;
+.formAddBook{
+    @media (max-width: 768px){
+        width: 100%;
     }
-}
-
-.list-group-item {
-    span {
-        font-weight: bold;
+    .imgWrapper{
+        margin-top: .8em;
+        width: 16em;
+        align-self: center;
+    
+        img{
+            height: 23em;
+        }
+    }
+    
+    .list-group-item {
+        span {
+            font-weight: bold;
+        }
     }
 }

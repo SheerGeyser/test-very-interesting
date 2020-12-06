@@ -9,12 +9,35 @@ export const fetchBooks = createAsyncThunk(
     }
 )
 
+export const createBook = createAsyncThunk(
+    'books/createBook',
+    async ({ bookAuthor, bookIsbn, bookName, imgUrl, bookYear }) => {
+        const book = await firebase.firestore().collection('book').add({
+            authors: `${bookAuthor}`,
+            isbn: `${bookIsbn}`,
+            name: `${bookName}`,
+            src: `${imgUrl}`,
+            year: parseInt(bookYear),
+        })
+        return { bookAuthor, bookIsbn, bookName, imgUrl, bookYear }
+    }
+)
+
+export const delleteBook = createAsyncThunk(
+    'delete/delleteBook',
+    async (id) => {
+        const delBook = await firebase.firestore().collection('book').doc(id).delete()
+        return delBook
+    }
+)
+
 const booksSlice = createSlice({
     name: 'books',
     initialState: {
         isLoadingBooks: false,
         items: [],
-        errorBooks: undefined
+        errorBooks: undefined,
+        reload: false
     },
     extraReducers: {
         [fetchBooks.pending]: (state) => ({ ...state, isLoadingBooks: true, errorBooks: undefined }),
@@ -23,6 +46,23 @@ const booksSlice = createSlice({
             ...state,
             isLoadingBooks: false,
             errorBooks: error,
+        }),
+        [createBook.pending]: (state) => ({
+            ...state,
+            reload: false
+        }),
+        [createBook.fulfilled]: (state, { payload }) => ({
+            ...state,
+            items: [...state.items, payload],
+            reload: true
+        }),
+        [delleteBook.pending]: (state) => ({
+            ...state,
+            reload: false
+        }),
+        [delleteBook.fulfilled]: (state) => ({
+            ...state,
+            reload: true
         })
     }
 })
