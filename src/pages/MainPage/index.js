@@ -11,7 +11,7 @@ export const MainPage = () => {
 
     return (
         <>
-            <Container className='itemWrapper'>
+            <Container className='itemWrapper mainPageWrapper'>
                 <Row>
                     {errorBooks && (
                         <div>

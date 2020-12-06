@@ -28,7 +28,7 @@ export const AddBook = () => {
     }, [reload])
 
     return (
-        <Form сlassName='formAddBook'>
+        <Form className='formAddBook'>
             <Card>
                 <ListGroup className="list-group-flush">
                     <ListGroupItem>

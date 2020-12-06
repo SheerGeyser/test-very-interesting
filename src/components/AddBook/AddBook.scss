@@ -1,20 +1,6 @@
 .formAddBook{
+    margin: 0px 1em;
     @media (max-width: 768px){
-        width: 100%;
-    }
-    .imgWrapper{
-        margin-top: .8em;
-        width: 16em;
-        align-self: center;
-    
-        img{
-            height: 23em;
-        }
-    }
-    
-    .list-group-item {
-        span {
-            font-weight: bold;
-        }
+    width: 100%;
     }
 }

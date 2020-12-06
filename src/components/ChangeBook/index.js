@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { Button, Card, Form, ListGroup, ListGroupItem } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
-import { delleteBook } from "../../store/books"
+import { delleteBook, updateBook } from "../../store/books"
 
 import './ChangeBook.scss'
 
@@ -19,6 +19,10 @@ export const ChangeBook = ({ src, name, authors, year, isbn, id }) => {
     const handleDell = () => {
         dispatch(delleteBook(id))
     }
+    const handleUppdate = (e) => {
+        e.preventDefault()
+        dispatch(updateBook({ bookAuthor, bookIsbn, bookName, imgUrl, bookYear, id }))
+    }
 
     useEffect(() => {
         if (reload) {
@@ -28,7 +32,7 @@ export const ChangeBook = ({ src, name, authors, year, isbn, id }) => {
 
     return (
 
-        <Form onReset={() => handleDell()} className='formChangeCard'>
+        <Form onReset={() => handleDell()} onSubmit={(e) => handleUppdate(e)} className='formChangeCard'>
             <Card className='changeCard'>
                 <div className='imgWrapper'>
                     <Card.Img variant="top" src={src} />
