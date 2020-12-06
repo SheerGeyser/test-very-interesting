@@ -31,6 +31,20 @@ export const delleteBook = createAsyncThunk(
     }
 )
 
+export const updateBook = createAsyncThunk(
+    'update/UpdateBook',
+    async ({ bookAuthor, bookIsbn, bookName, imgUrl, bookYear, id }) => {
+        const updateBooks = await firebase.firestore().collection('book').doc(id).set({
+            authors: `${bookAuthor}`,
+            isbn: `${bookIsbn}`,
+            name: `${bookName}`,
+            src: `${imgUrl}`,
+            year: parseInt(bookYear),
+        })
+        return updateBooks
+    }
+)
+
 const booksSlice = createSlice({
     name: 'books',
     initialState: {
